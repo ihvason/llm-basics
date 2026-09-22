@@ -33,9 +33,12 @@ Thumbs.db
 # ------------------------------------------------------------------------------
 # Local data and run artifacts
 # ------------------------------------------------------------------------------
-checkpoints/
-runs/
-data/tokenized/
+checkpoints/*
+!checkpoints/.gitkeep
+runs/*
+!runs/.gitkeep
+data/tokenized/*
+!data/tokenized/.gitkeep
 
 # ------------------------------------------------------------------------------
 # Reference material
