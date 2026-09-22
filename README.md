@@ -173,6 +173,25 @@ iteration, so the last file is not necessarily a multiple of `save_interval`.
 `latest.pt` is a *relative* symlink so the tree stays portable when the root
 moves, and generation can target the newest run without naming it.
 
+## Running on a server
+
+```bash
+git clone git@github.com:ihvason/llm-basics.git
+cd llm-basics
+
+# Optional. Defaults are <repo>/data, <repo>/checkpoints and
+# <repo>/runs; point them at real disk on a server.
+export LLM_BASICS_DATA_ROOT=/mnt/data/llm
+export LLM_BASICS_CHECKPOINT_ROOT=/mnt/big/checkpoints
+export LLM_BASICS_RUNS_ROOT=/mnt/logs/runs
+
+# Writes ${DATA_ROOT}/tokenized/*.bin. Required: those are gitignored.
+python scripts/prepare_data.py
+
+python scripts/run_train.py
+
+python scripts/run_generate.py
+```
 ## Data
 
 Download the TinyStories data and a subsample of OpenWebText:
