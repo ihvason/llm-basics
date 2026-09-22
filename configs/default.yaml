@@ -1,0 +1,86 @@
+# ==============================================================================
+# Project defaults.
+
+# ------------------------------------------------------------------------------
+# 1. Tokenizer and corpus preprocessing
+# ------------------------------------------------------------------------------
+tokenizer:
+  raw_train_path: ${DATA_ROOT}/corpus/sample_train.txt
+  vocab_size: 10000
+  special_tokens:
+    - "<|endoftext|>"
+  vocab_output_path: ${DATA_ROOT}/tokenizer/vocab.json
+  merges_output_path: ${DATA_ROOT}/tokenizer/merges.txt
+
+data:
+  train_text_path: ${DATA_ROOT}/corpus/sample_train.txt
+  val_text_path: ${DATA_ROOT}/corpus/sample_val.txt
+  train_bin_output_path: ${DATA_ROOT}/tokenized/sample_train.bin
+  val_bin_output_path: ${DATA_ROOT}/tokenized/sample_val.bin
+  chunk_lines: 200
+  dtype: "uint16"
+
+# ------------------------------------------------------------------------------
+# 2. Model architecture
+# ------------------------------------------------------------------------------
+model:
+  context_length: 64
+  d_model: 128
+  num_layers: 2
+  num_heads: 2
+  d_ff: 512
+  rope_theta: 10000.0
+
+# ------------------------------------------------------------------------------
+# 3. Training and optimization
+# ------------------------------------------------------------------------------
+train:
+  train_bin_path: ${DATA_ROOT}/tokenized/sample_train.bin
+  val_bin_path: ${DATA_ROOT}/tokenized/sample_val.bin
+  checkpoint_dir: ${CHECKPOINT_ROOT}
+  runs_dir: ${RUNS_ROOT}
+  resume_checkpoint: null
+  device: "auto"
+
+  batch_size: 4
+  max_iters: 50
+
+  lr: 3.0e-4
+  min_lr: 3.0e-5
+  warmup_iters: 10
+  cosine_cycle_iters: 50
+
+  weight_decay: 0.1
+  beta1: 0.9
+  beta2: 0.95
+  grad_clip: 1.0
+
+  use_amp: false
+
+  log_interval: 10
+  eval_interval: 25
+  eval_iters: 10
+  save_interval: 50
+
+  exp_name: null
+  use_wandb: false
+  wandb_project: "llm-basics"
+
+# ------------------------------------------------------------------------------
+# 4. Inference and sampling
+# ------------------------------------------------------------------------------
+generate:
+  checkpoint_path: ${CHECKPOINT_ROOT}/latest.pt
+  vocab_path: ${DATA_ROOT}/tokenizer/vocab.json
+  merges_path: ${DATA_ROOT}/tokenizer/merges.txt
+  device: "auto"
+
+  prompt: "Once upon a time, there was a little girl named Lily"
+  max_new_tokens: 128
+
+  stop_words:
+    - "<|endoftext|>"
+
+  temperature: 0.8
+  top_k: 50
+  top_p: 0.9

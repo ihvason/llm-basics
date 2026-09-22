@@ -1,0 +1,54 @@
+[project]
+name = "llm-basics"
+description = "Build LLMs from scratch"
+version = "0.1.0"
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "einops>=0.8",
+    "jaxtyping>=0.3",
+    "numpy>=2.4",
+    "psutil>=7",
+    "pyyaml>=6.0.3",
+    "regex>=2026.3.32",
+    "tiktoken>=0.12.0",
+    "torch~=2.11.0",
+    "wandb>=0.25",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0",
+    "pytest-timeout",
+    "ruff>=0.15.8",
+    "ty>=0.0.26",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.0,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "llm_basics"
+module-root = ""
+
+[tool.uv]
+package = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+log_cli = true
+log_cli_level = "WARNING"
+addopts = "-s"
+
+[tool.ruff]
+line-length = 120
+extend-exclude = [".venv", ".uv-cache", "_backup"]
+
+[tool.ruff.lint]
+extend-select = ["UP"]
+ignore = ["F722"]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"__init__.py" = ["E402", "F401", "F403", "E501"]
+"scripts/*.py" = ["F401"]
